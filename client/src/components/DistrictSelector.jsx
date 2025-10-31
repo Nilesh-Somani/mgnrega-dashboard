@@ -8,7 +8,7 @@ const DistrictSelector = ({ value, onChange }) => {
   const [districts, setDistricts] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/data')
+    axios.get('https://mgnrega-dashboard-server.onrender.com/api/data')
       .then(res => setDistricts(res.data))
       .catch(err => console.error('Failed to load districts', err));
   }, []);

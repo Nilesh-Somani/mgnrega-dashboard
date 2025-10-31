@@ -20,7 +20,7 @@ function App() {
 
   useEffect(() => {
     if (district) {
-      axios.get(`http://localhost:5000/api/data/${district}`)
+      axios.get(`https://mgnrega-dashboard-server.onrender.com/api/data/${district}`)
         .then(res => {
           // If backend returns { records: [...] }
           if (Array.isArray(res.data.records)) {
@@ -39,7 +39,7 @@ function App() {
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(pos => {
       const { latitude, longitude } = pos.coords;
-      axios.get(`http://localhost:5000/api/data/locate?lat=${latitude}&lng=${longitude}`)
+      axios.get(`https://mgnrega-dashboard-server.onrender.com/api/data/locate?lat=${latitude}&lng=${longitude}`)
         .then(res => {
           const locatedDistrict = res.data.district;
           setDistrict(locatedDistrict);
