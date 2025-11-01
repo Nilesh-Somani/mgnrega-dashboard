@@ -4,15 +4,15 @@ const districts = require('../constants/districts');
 
 exports.getDistrictData = async (req, res) => {
     const district = req.params.district.toUpperCase();
-    const state = 'RAJASTHAN';
+    const isRajasthanDistrict = districts.includes(district);
     let cached = null;
 
     console.log('Requested district:', district);
     if (!districts) {
         console.error('District list is undefined!');
     }
-    if (!districts.includes(district)) {
-        console.warn('District not in known list:', district);
+    if (!isRajasthanDistrict) {
+        console.warn('District not in Rajasthan list:', district);
     }
 
     try {
@@ -26,7 +26,13 @@ exports.getDistrictData = async (req, res) => {
             return res.json(cached.data);
         }
 
-        const apiUrl = `https://api.data.gov.in/resource/${process.env.RESOURCE_ID}?api-key=${process.env.DATA_GOV_API_KEY}&format=json&filters[state_name]=${state}&filters[district_name]=${district}&limit=10000`;
+        // Build API URL conditionally
+        const baseUrl = `https://api.data.gov.in/resource/${process.env.RESOURCE_ID}?api-key=${process.env.DATA_GOV_API_KEY}&format=json`;
+        const filters = isRajasthanDistrict
+            ? `&filters[state_name]=RAJASTHAN&filters[district_name]=${district}`
+            : `&filters[district_name]=${district}`;
+        const apiUrl = `${baseUrl}${filters}&limit=10000`;
+
         console.log('Gov API URL:', apiUrl);
 
         const response = await axios.get(apiUrl);
