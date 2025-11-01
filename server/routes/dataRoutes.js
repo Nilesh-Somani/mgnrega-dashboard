@@ -11,12 +11,12 @@ router.get('/', (req, res) => {
 router.get('/locate', async (req, res) => {
   const { lat, lng } = req.query;
   if (!lat || !lng) return res.status(400).json({ error: 'Missing coordinates' });
-  
+
   try {
-    const district = await getDistrictFromCoords(lat, lng);
+    const { district, state } = await getDistrictFromCoords(lat, lng);
     if (!district) return res.status(404).json({ error: 'District not found' });
-    
-    res.json({ district });
+
+    res.json({ district, state });
   } catch (err) {
     console.error('Locate error:', err.message);
     res.status(500).json({ error: 'Failed to locate district' });

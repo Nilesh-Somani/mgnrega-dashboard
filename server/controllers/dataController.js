@@ -4,7 +4,7 @@ const districts = require('../constants/districts');
 
 exports.getDistrictData = async (req, res) => {
     const district = req.params.district.toUpperCase();
-    const isRajasthanDistrict = districts.includes(district);
+    const state = req.query.state?.toUpperCase() || 'RAJASTHAN';
     let cached = null;
 
     console.log('Requested district:', district);
@@ -28,9 +28,7 @@ exports.getDistrictData = async (req, res) => {
 
         // Build API URL conditionally
         const baseUrl = `https://api.data.gov.in/resource/${process.env.RESOURCE_ID}?api-key=${process.env.DATA_GOV_API_KEY}&format=json`;
-        const filters = isRajasthanDistrict
-            ? `&filters[state_name]=RAJASTHAN&filters[district_name]=${district}`
-            : `&filters[district_name]=${district}`;
+        const filters = `&filters[state_name]=${state}&filters[district_name]=${district}`;
         const apiUrl = `${baseUrl}${filters}&limit=10000`;
 
         console.log('Gov API URL:', apiUrl);

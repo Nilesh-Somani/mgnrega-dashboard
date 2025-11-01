@@ -10,12 +10,15 @@ const getDistrictFromCoords = async (lat, lng) => {
     console.log('OpenCage components:', components);
 
     const district = components.state_district || components.county || components.city;
-    console.log('Extracted district:', district);
+    const state = components.state;
 
-    return district ? district.toUpperCase() : null;
+    return {
+      district: district ? district.toUpperCase() : null,
+      state: state ? state.toUpperCase() : null
+    };
   } catch (error) {
     console.error('Geolocation error:', error.message);
-    return null;
+    return { district: null, state: null };
   }
 };
 
