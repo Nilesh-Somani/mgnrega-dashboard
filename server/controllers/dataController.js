@@ -11,9 +11,6 @@ exports.getDistrictData = async (req, res) => {
     if (!districts) {
         console.error('District list is undefined!');
     }
-    if (!isRajasthanDistrict) {
-        console.warn('District not in Rajasthan list:', district);
-    }
 
     try {
         cached = await DistrictData.findOne({ district });
